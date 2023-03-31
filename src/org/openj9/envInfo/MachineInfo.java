@@ -182,6 +182,8 @@ public class MachineInfo {
 	}
 
 	private void getSysInfo() {
+		System.out.println("Executing getSysInfo....");
+		putInfo(new Info("osName", OS_NAME_CMD, ce.execute(OS_NAME_CMD), null));
 		putInfo(new Info("uname", UNAME_CMD, ce.execute(UNAME_CMD), null));
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			putInfo(new Info("cpuCores", CPU_CORES_CMD, ce.execute(CPU_CORES_CMD_MAC), null));
@@ -190,16 +192,21 @@ public class MachineInfo {
 		} else {
 			putInfo(new Info("cpuCores", CPU_CORES_CMD, ce.execute(CPU_CORES_CMD), null));
 		}
+		System.out.println("Checking for sysArch, procArch, and micro-architecture...");
 		putInfo(new Info("sysArch", SYS_ARCH_CMD, ce.execute(SYS_ARCH_CMD), null));
 		putInfo(new Info("procArch", PROC_ARCH_CMD, ce.execute(PROC_ARCH_CMD), null));
+		System.out.println("Checking micro-architecture...");
 		String microArchOutput = ce.execute(MICRO_ARCH_CMD);
+		System.out.println("Micro-architecture output: " + microArchOutput + "");
 		if (microArchOutput.toLowerCase().contains("skylake")) {
 			String microArch = "skylake";
 			putInfo(new Info("microArch", MICRO_ARCH_CMD, microArch, null));
 		}
+		System.out.println("Checking for docker, sysOS, and uLimit...");
 		putInfo(new Info("sysOS", SYS_OS_CMD, ce.execute(SYS_OS_CMD), null));
 		putInfo(new Info("ulimit", ULIMIT_CMD, ce.execute(ULIMIT_CMD), null));
 		putInfo(new Info("docker", CHECK_DOCKER_CMD, ce.execute(CHECK_DOCKER_CMD), null));
+		System.out.println("Ending getSysInfo....");
 	}
 	
 	private void getOsLabel() {

@@ -34,6 +34,7 @@ public class CmdExecutor {
 
 	public String execute(String[] commands) {
 		String rt = null;
+		System.out.println("Executing command....");
 		try {
 			ProcessBuilder builder = new ProcessBuilder(Arrays.asList(commands));
 			builder.redirectErrorStream(true);
@@ -42,15 +43,19 @@ public class CmdExecutor {
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			String newline = "";  
+			System.out.println("Reading line....");
 			while ((line = stdOutput.readLine()) != null) {
 				sb.append(newline).append(line);
 				newline = "\n";
+				System.out.println("Current line is: " + line + "");
 			}
+			System.out.println("Done reading line....");
 			rt = sb.toString();
 			proc.waitFor();
 		} catch (IOException | InterruptedException e) {
 			return "Command could not be executed";
 		}
+		System.out.println("Command executed successfully....");
 		return rt;
 	}
 }
