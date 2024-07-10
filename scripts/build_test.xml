@@ -120,33 +120,12 @@
 		<chmod file="${ascii.test.dir}/*.mk" perm="755"/>
 	</target>
 
-	<target name="findCygwinDir">
-        <!-- Get CYGWIN_HOME environment variable -->
-        <property environment="env"/>
-        <property name="cygwinHome" value="${env.CYGWIN_HOME}"/>
-
-        <!-- Check if CYGWIN_HOME is set -->
-        <condition property="isCygwinHomeSet">
-            <isset property="cygwinHome"/>
-        </condition>
-
-        <!-- If CYGWIN_HOME is not set, check common installation paths or set a default -->
-        <condition property="cygwinHome" value="C:/cygwin64" else="${cygwinHome}">
-            <not>
-                <isset property="cygwinHome"/>
-            </not>
-        </condition>
-    </target>
-
 	<macrodef name="getFileWithRetry">
 		<attribute name="file" />
 		<attribute name="command" />
 		<attribute name="dest" default="." />
 		<sequential>
-			<condition property="bashExecutable" value="${cygwinHome}/bin/bash" else="bash">
-                <isset property="cygwinHome"/>
-            </condition>
-			<exec executable="${bashExecutable}" failonerror="true" dir="@{dest}">
+			<exec executable="${cygwinHome}/bin/bash.exe" failonerror="true" dir="@{dest}">
 				<arg line="${TEST_ROOT}/TKG/scripts/getFileWithRetry.sh" />
 				<arg line="--file @{file}" />
 				<arg line="--command &quot;@{command}&quot;" />
